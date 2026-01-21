@@ -35,7 +35,6 @@
             overflow-x: hidden;
         }
 
-        /* Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -53,7 +52,6 @@
             background: var(--primary);
         }
 
-        /* Background Animation */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -130,35 +128,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-        }
-
-        .nav-tabs {
-            display: flex;
-            gap: 0.5rem;
-            background: var(--dark-light);
-            padding: 0.35rem;
-            border-radius: 12px;
-        }
-
-        .nav-tab {
-            padding: 0.6rem 1.25rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            transition: all 0.3s;
-            border: none;
-            background: transparent;
-        }
-
-        .nav-tab:hover {
-            color: var(--text);
-        }
-
-        .nav-tab.active {
-            background: var(--gradient);
-            color: white;
         }
 
         .header-right {
@@ -324,7 +293,6 @@
             color: var(--success);
         }
 
-        /* Live Indicator */
         .live-indicator {
             display: flex;
             align-items: center;
@@ -401,25 +369,10 @@
             color: white;
         }
 
-        .view-all {
-            color: var(--secondary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            transition: gap 0.3s;
-        }
-
-        .view-all:hover {
-            gap: 0.6rem;
-        }
-
         /* Main Grid Layout */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: 1fr 380px;
+            grid-template-columns: 1fr 400px;
             gap: 1.5rem;
         }
 
@@ -654,10 +607,16 @@
             padding: 1.25rem;
         }
 
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
         .sidebar-title {
             font-size: 1rem;
             font-weight: 700;
-            margin-bottom: 1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -667,69 +626,171 @@
             color: var(--primary);
         }
 
-        /* Hashtags List */
+        .refresh-section-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.3s;
+        }
+
+        .refresh-section-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .refresh-section-btn.loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        /* Hashtags List - IMPROVED */
         .hashtag-list {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            max-height: 500px;
+            overflow-y: auto;
         }
 
         .hashtag-item {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.75rem;
+            padding: 0.85rem;
             background: var(--dark-lighter);
             border-radius: 12px;
             transition: all 0.3s;
             cursor: pointer;
+            border: 1px solid transparent;
         }
 
         .hashtag-item:hover {
-            background: rgba(254, 44, 85, 0.1);
+            background: rgba(37, 244, 238, 0.1);
+            border-color: rgba(37, 244, 238, 0.3);
+            transform: translateX(5px);
         }
 
         .hashtag-rank {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             background: var(--gradient);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .hashtag-rank.top3 {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
         }
 
         .hashtag-info {
             flex: 1;
+            min-width: 0;
         }
 
         .hashtag-name {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--secondary);
-            margin-bottom: 0.15rem;
+            margin-bottom: 0.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .hashtag-meta {
             font-size: 0.75rem;
             color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hashtag-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .hashtag-stats {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .hashtag-views {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text);
+            margin-bottom: 0.15rem;
         }
 
         .hashtag-growth {
-            text-align: right;
-        }
-
-        .hashtag-growth-value {
-            font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             color: var(--success);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.25rem;
         }
 
-        .hashtag-growth-label {
-            font-size: 0.7rem;
-            color: var(--text-muted);
+        .hashtag-growth i {
+            font-size: 0.65rem;
+        }
+
+        /* Loading skeleton for hashtags */
+        .hashtag-skeleton {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem;
+            background: var(--dark-lighter);
+            border-radius: 12px;
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, var(--dark-lighter) 25%, rgba(255,255,255,0.08) 50%, var(--dark-lighter) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 6px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-rank {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+        }
+
+        .skeleton-info {
+            flex: 1;
+        }
+
+        .skeleton-line {
+            height: 12px;
+            margin-bottom: 0.5rem;
+        }
+
+        .skeleton-line:last-child {
+            width: 60%;
+            margin-bottom: 0;
+        }
+
+        .skeleton-stats {
+            width: 60px;
         }
 
         /* Sounds List */
@@ -837,7 +898,7 @@
             color: var(--success);
         }
 
-        /* Predictions Card */
+        /* Predictions */
         .prediction-list {
             display: flex;
             flex-direction: column;
@@ -887,78 +948,6 @@
             border-radius: 6px;
             font-weight: 700;
             font-size: 0.8rem;
-        }
-
-        /* Loading States */
-        .skeleton {
-            background: linear-gradient(90deg, var(--dark-lighter) 25%, rgba(255,255,255,0.05) 50%, var(--dark-lighter) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 8px;
-        }
-
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        .loading-card {
-            background: var(--dark-light);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-
-        .loading-card .skeleton-thumbnail {
-            aspect-ratio: 9/12;
-        }
-
-        .loading-card .skeleton-content {
-            padding: 1rem;
-        }
-
-        .loading-card .skeleton-line {
-            height: 12px;
-            margin-bottom: 0.5rem;
-        }
-
-        .loading-card .skeleton-line:last-child {
-            width: 60%;
-            margin-bottom: 0;
-        }
-
-        /* Error State */
-        .error-state {
-            text-align: center;
-            padding: 3rem;
-            color: var(--text-muted);
-        }
-
-        .error-state i {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .error-state h3 {
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
-
-        .error-state button {
-            margin-top: 1rem;
-            padding: 0.75rem 1.5rem;
-            background: var(--gradient);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .error-state button:hover {
-            transform: scale(1.05);
         }
 
         /* Toast Notifications */
@@ -1110,53 +1099,21 @@
             overflow-y: auto;
         }
 
-        .modal-video {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 1.5rem;
-        }
-
-        .modal-video-player {
-            aspect-ratio: 9/16;
-            background: var(--dark);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .modal-video-player video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .modal-video-info h2 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-        }
-
-        .modal-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-stat {
-            background: var(--dark-lighter);
-            padding: 1rem;
-            border-radius: 12px;
+        /* Empty State */
+        .empty-state {
             text-align: center;
-        }
-
-        .modal-stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .modal-stat-label {
-            font-size: 0.8rem;
+            padding: 2rem;
             color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 0.9rem;
         }
 
         /* Responsive */
@@ -1185,10 +1142,6 @@
             .sidebar {
                 grid-template-columns: 1fr;
             }
-
-            .nav-tabs {
-                display: none;
-            }
         }
 
         @media (max-width: 600px) {
@@ -1211,10 +1164,6 @@
             .videos-grid {
                 grid-template-columns: 1fr;
             }
-
-            .modal-video {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -1231,27 +1180,12 @@
                 <span class="logo-text">TrendSpotter</span>
             </a>
 
-            <div class="nav-tabs">
-                <button class="nav-tab active" data-tab="trending">
-                    <i class="fas fa-fire"></i> Trending
-                </button>
-                <button class="nav-tab" data-tab="hashtags">
-                    <i class="fas fa-hashtag"></i> Hashtags
-                </button>
-                <button class="nav-tab" data-tab="sounds">
-                    <i class="fas fa-music"></i> Sounds
-                </button>
-                <button class="nav-tab" data-tab="discover">
-                    <i class="fas fa-compass"></i> Discover
-                </button>
-            </div>
-
             <div class="header-right">
                 <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search trends, hashtags, sounds..." id="searchInput">
+                    <input type="text" placeholder="Search hashtags..." id="searchInput">
                 </div>
-                <button class="icon-btn" id="refreshBtn" title="Refresh Data">
+                <button class="icon-btn" id="refreshBtn" title="Refresh All Data">
                     <i class="fas fa-sync-alt"></i>
                 </button>
                 <button class="icon-btn" title="Notifications">
@@ -1285,7 +1219,7 @@
                     </div>
                     <div class="stat-info">
                         <div class="stat-value" id="hashtagCount">--</div>
-                        <div class="stat-label">Rising Hashtags</div>
+                        <div class="stat-label">Trending Hashtags</div>
                     </div>
                     <div class="stat-change up">
                         <i class="fas fa-arrow-up"></i> 12%
@@ -1322,19 +1256,18 @@
             <div class="dashboard-grid">
                 <!-- Main Content Area -->
                 <div class="main-area">
-                    <!-- Trending Videos Section -->
                     <section class="section" id="trendingSection">
                         <div class="section-header">
                             <h2 class="section-title">
                                 <i class="fas fa-rocket"></i>
-                                Emerging Trends
+                                Trending Videos
                             </h2>
                             <div class="section-actions">
                                 <div class="filter-chips">
-                                    <button class="filter-chip active" data-region="all">Global</button>
-                                    <button class="filter-chip" data-region="us">US</button>
-                                    <button class="filter-chip" data-region="uk">UK</button>
-                                    <button class="filter-chip" data-region="br">Brazil</button>
+                                    <button class="filter-chip active" data-region="us">🇺🇸 US</button>
+                                    <button class="filter-chip" data-region="gb">🇬🇧 UK</button>
+                                    <button class="filter-chip" data-region="br">🇧🇷 Brazil</button>
+                                    <button class="filter-chip" data-region="de">🇩🇪 Germany</button>
                                 </div>
                             </div>
                         </div>
@@ -1346,12 +1279,18 @@
 
                 <!-- Sidebar -->
                 <aside class="sidebar">
-                    <!-- Rising Hashtags -->
+                    <!-- Trending Hashtags - MAIN FOCUS -->
                     <div class="sidebar-card">
-                        <h3 class="sidebar-title">
-                            <i class="fas fa-hashtag"></i>
-                            Rising Hashtags
-                        </h3>
+                        <div class="sidebar-header">
+                            <h3 class="sidebar-title">
+                                <i class="fas fa-hashtag"></i>
+                                Trending Hashtags
+                            </h3>
+                            <button class="refresh-section-btn" id="refreshHashtagsBtn" onclick="fetchTrendingHashtags()">
+                                <i class="fas fa-sync-alt"></i>
+                                Refresh
+                            </button>
+                        </div>
                         <div class="hashtag-list" id="hashtagsList">
                             <!-- Hashtags will be loaded here -->
                         </div>
@@ -1359,25 +1298,29 @@
 
                     <!-- Trending Sounds -->
                     <div class="sidebar-card">
-                        <h3 class="sidebar-title">
-                            <i class="fas fa-music"></i>
-                            Trending Sounds
-                        </h3>
+                        <div class="sidebar-header">
+                            <h3 class="sidebar-title">
+                                <i class="fas fa-music"></i>
+                                Trending Sounds
+                            </h3>
+                        </div>
                         <div class="sound-list" id="soundsList">
                             <!-- Sounds will be loaded here -->
                         </div>
                     </div>
 
-                    <!-- Predictions -->
+                    <!-- Viral Predictions -->
                     <div class="sidebar-card">
-                        <h3 class="sidebar-title">
-                            <i class="fas fa-crystal-ball"></i>
-                            Viral Predictions
-                            <span class="live-indicator" style="margin-left: auto; padding: 0.3rem 0.6rem; font-size: 0.7rem;">
+                        <div class="sidebar-header">
+                            <h3 class="sidebar-title">
+                                <i class="fas fa-crystal-ball"></i>
+                                Viral Predictions
+                            </h3>
+                            <span class="live-indicator" style="padding: 0.3rem 0.6rem; font-size: 0.7rem;">
                                 <span class="live-dot"></span>
                                 AI
                             </span>
-                        </h3>
+                        </div>
                         <div class="prediction-list" id="predictionsList">
                             <!-- Predictions will be loaded here -->
                         </div>
@@ -1399,9 +1342,7 @@
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="modal-body" id="modalBody">
-                <!-- Modal content will be loaded here -->
-            </div>
+            <div class="modal-body" id="modalBody"></div>
         </div>
     </div>
 
@@ -1413,19 +1354,30 @@
             baseUrl: 'https://tiktok-scraper7.p.rapidapi.com'
         };
 
-        // State Management
+        // State
         let state = {
             videos: [],
             hashtags: [],
             sounds: [],
-            loading: false,
-            currentRegion: 'us',
-            lastUpdate: null
+            currentRegion: 'us'
         };
+
+        // Trending hashtags to check (popular/emerging ones)
+        const TRENDING_HASHTAGS = [
+            'fyp', 'viral', 'trending', 'foryou', 'foryoupage',
+            'dance', 'funny', 'comedy', 'love', 'music',
+            'fashion', 'beauty', 'food', 'travel', 'fitness',
+            'art', 'photography', 'gaming', 'sports', 'nature',
+            'diy', 'lifehack', 'motivation', 'education', 'tech',
+            'pet', 'dog', 'cat', 'makeup', 'skincare',
+            'cooking', 'recipe', 'workout', 'yoga', 'outfit',
+            'ootd', 'grwm', 'storytime', 'pov', 'duet'
+        ];
 
         // Utility Functions
         function formatNumber(num) {
             if (!num) return '0';
+            num = parseInt(num);
             if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'B';
             if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
             if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
@@ -1433,34 +1385,17 @@
         }
 
         function calculateTrendScore(video) {
-            // Calculate a trend score based on engagement metrics
             const views = video.playCount || video.play_count || 0;
             const likes = video.diggCount || video.digg_count || 0;
             const comments = video.commentCount || video.comment_count || 0;
             const shares = video.shareCount || video.share_count || 0;
             
             const engagementRate = views > 0 ? ((likes + comments + shares) / views) * 100 : 0;
-            const recency = video.createTime ? (Date.now() / 1000 - video.createTime) / 3600 : 24; // hours ago
-            
-            // Score formula: high engagement + recent = higher score
             let score = Math.min(99, Math.round(
                 (engagementRate * 10) + 
-                (Math.max(0, 100 - recency * 2)) +
-                (Math.log10(views + 1) * 5)
+                (Math.log10(views + 1) * 5) + 50
             ));
-            
             return Math.max(50, score);
-        }
-
-        function getVideoCategory(video) {
-            const desc = (video.desc || video.description || '').toLowerCase();
-            if (desc.includes('dance') || desc.includes('choreography')) return 'Dance';
-            if (desc.includes('comedy') || desc.includes('funny') || desc.includes('joke')) return 'Comedy';
-            if (desc.includes('food') || desc.includes('recipe') || desc.includes('cooking')) return 'Food';
-            if (desc.includes('fashion') || desc.includes('outfit') || desc.includes('style')) return 'Fashion';
-            if (desc.includes('fitness') || desc.includes('workout') || desc.includes('gym')) return 'Fitness';
-            if (desc.includes('music') || desc.includes('song') || desc.includes('sing')) return 'Music';
-            return 'Entertainment';
         }
 
         function getBadgeType(score) {
@@ -1474,32 +1409,199 @@
             const url = new URL(`${API_CONFIG.baseUrl}${endpoint}`);
             Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
-            try {
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'X-RapidAPI-Key': API_CONFIG.key,
-                        'X-RapidAPI-Host': API_CONFIG.host
-                    }
-                });
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': API_CONFIG.key,
+                    'X-RapidAPI-Host': API_CONFIG.host
+                }
+            });
 
-                if (!response.ok) {
-                    throw new Error(`API Error: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`API Error: ${response.status}`);
+            }
+
+            return await response.json();
+        }
+
+        // Show loading skeleton for hashtags
+        function showHashtagsLoading() {
+            const container = document.getElementById('hashtagsList');
+            container.innerHTML = Array(8).fill().map(() => `
+                <div class="hashtag-skeleton">
+                    <div class="skeleton skeleton-rank"></div>
+                    <div class="skeleton-info">
+                        <div class="skeleton skeleton-line" style="width: 80%;"></div>
+                        <div class="skeleton skeleton-line" style="width: 50%;"></div>
+                    </div>
+                    <div class="skeleton skeleton-stats" style="height: 30px;"></div>
+                </div>
+            `).join('');
+        }
+
+        // Fetch Trending Hashtags - MAIN FUNCTION
+        async function fetchTrendingHashtags() {
+            const btn = document.getElementById('refreshHashtagsBtn');
+            btn.classList.add('loading');
+            showHashtagsLoading();
+
+            try {
+                const hashtagData = [];
+                
+                // Fetch data for multiple hashtags
+                const hashtagsToFetch = TRENDING_HASHTAGS.slice(0, 15); // Fetch top 15
+                
+                for (const hashtag of hashtagsToFetch) {
+                    try {
+                        const data = await fetchFromAPI('/challenge/info', {
+                            challenge_name: hashtag
+                        });
+
+                        if (data && data.data) {
+                            const challengeInfo = data.data.challengeInfo || data.data;
+                            const stats = challengeInfo.stats || challengeInfo.statsV2 || {};
+                            
+                            hashtagData.push({
+                                id: challengeInfo.id || hashtag,
+                                name: challengeInfo.title || challengeInfo.challengeName || hashtag,
+                                desc: challengeInfo.desc || '',
+                                views: parseInt(stats.viewCount || stats.views || 0),
+                                videos: parseInt(stats.videoCount || stats.videos || 0),
+                                growth: Math.floor(Math.random() * 500) + 50 // Simulated growth
+                            });
+                        }
+                    } catch (err) {
+                        console.log(`Couldn't fetch #${hashtag}:`, err.message);
+                    }
+                    
+                    // Small delay to avoid rate limiting
+                    await new Promise(resolve => setTimeout(resolve, 100));
                 }
 
-                const data = await response.json();
-                return data;
+                // Sort by views
+                state.hashtags = hashtagData
+                    .filter(h => h.views > 0)
+                    .sort((a, b) => b.views - a.views)
+                    .slice(0, 10);
+
+                renderHashtags();
+                document.getElementById('hashtagCount').textContent = state.hashtags.length;
+                showToast('success', 'Hashtags Updated', `Found ${state.hashtags.length} trending hashtags`);
+
             } catch (error) {
-                console.error('API Error:', error);
-                throw error;
+                console.error('Error fetching hashtags:', error);
+                loadMockHashtags();
+                showToast('error', 'Using Cached Data', 'Could not fetch live hashtags');
+            } finally {
+                btn.classList.remove('loading');
             }
         }
 
-        // Fetch Trending Feed
-        async function fetchTrendingVideos() {
+        // Fetch from challenge/search endpoint
+        async function searchHashtags(keyword) {
             try {
-                showLoading('videosGrid');
-                
+                const data = await fetchFromAPI('/challenge/search', {
+                    keywords: keyword,
+                    count: '10'
+                });
+
+                if (data && data.data && data.data.challenge_list) {
+                    return data.data.challenge_list.map(challenge => ({
+                        id: challenge.id,
+                        name: challenge.cha_name || challenge.title,
+                        views: challenge.view_count || 0,
+                        videos: challenge.user_count || 0,
+                        growth: Math.floor(Math.random() * 500) + 50
+                    }));
+                }
+                return [];
+            } catch (error) {
+                console.error('Search error:', error);
+                return [];
+            }
+        }
+
+        // Render Hashtags - IMPROVED
+        function renderHashtags() {
+            const container = document.getElementById('hashtagsList');
+
+            if (!state.hashtags.length) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-hashtag"></i>
+                        <p>No hashtags found. Click refresh to load.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = state.hashtags.map((hashtag, index) => `
+                <div class="hashtag-item" onclick="exploreHashtag('${hashtag.name}')">
+                    <div class="hashtag-rank ${index < 3 ? 'top3' : ''}">${index + 1}</div>
+                    <div class="hashtag-info">
+                        <div class="hashtag-name">#${hashtag.name}</div>
+                        <div class="hashtag-meta">
+                            <span><i class="fas fa-video"></i> ${formatNumber(hashtag.videos)} videos</span>
+                        </div>
+                    </div>
+                    <div class="hashtag-stats">
+                        <div class="hashtag-views">${formatNumber(hashtag.views)}</div>
+                        <div class="hashtag-growth">
+                            <i class="fas fa-arrow-up"></i>
+                            +${hashtag.growth}%
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Mock hashtags fallback
+        function loadMockHashtags() {
+            state.hashtags = [
+                { name: 'fyp', views: 45000000000, videos: 890000000, growth: 234 },
+                { name: 'viral', views: 23000000000, videos: 450000000, growth: 456 },
+                { name: 'trending', views: 12000000000, videos: 230000000, growth: 312 },
+                { name: 'dance', views: 8900000000, videos: 180000000, growth: 189 },
+                { name: 'funny', views: 7600000000, videos: 156000000, growth: 267 },
+                { name: 'comedy', views: 5400000000, videos: 98000000, growth: 198 },
+                { name: 'fashion', views: 4200000000, videos: 87000000, growth: 145 },
+                { name: 'food', views: 3800000000, videos: 76000000, growth: 223 },
+                { name: 'fitness', views: 2900000000, videos: 54000000, growth: 178 },
+                { name: 'music', views: 2500000000, videos: 48000000, growth: 156 }
+            ];
+            renderHashtags();
+            document.getElementById('hashtagCount').textContent = state.hashtags.length;
+        }
+
+        // Explore a specific hashtag
+        async function exploreHashtag(hashtagName) {
+            showToast('success', 'Loading', `Fetching videos for #${hashtagName}...`);
+            
+            try {
+                const data = await fetchFromAPI('/challenge/posts', {
+                    challenge_name: hashtagName,
+                    count: '20'
+                });
+
+                if (data && data.data && data.data.videos) {
+                    state.videos = data.data.videos.map(video => ({
+                        ...video,
+                        trendScore: calculateTrendScore(video)
+                    }));
+                    renderVideos();
+                    document.getElementById('trendingCount').textContent = state.videos.length;
+                    showToast('success', 'Loaded', `Found ${state.videos.length} videos for #${hashtagName}`);
+                }
+            } catch (error) {
+                showToast('error', 'Error', `Could not load #${hashtagName} videos`);
+            }
+        }
+
+        // Fetch Trending Videos
+        async function fetchTrendingVideos() {
+            showVideosLoading();
+            
+            try {
                 const data = await fetchFromAPI('/feed/list', {
                     region: state.currentRegion,
                     count: '20'
@@ -1508,123 +1610,62 @@
                 if (data && data.data && data.data.videos) {
                     state.videos = data.data.videos.map(video => ({
                         ...video,
-                        trendScore: calculateTrendScore(video),
-                        category: getVideoCategory(video)
+                        trendScore: calculateTrendScore(video)
                     })).sort((a, b) => b.trendScore - a.trendScore);
 
                     renderVideos();
                     document.getElementById('trendingCount').textContent = state.videos.length;
-                    showToast('success', 'Data Updated', `Found ${state.videos.length} trending videos`);
+                    
+                    // Extract sounds from videos
+                    extractSoundsFromVideos();
                 } else {
-                    throw new Error('Invalid response format');
+                    throw new Error('No videos in response');
                 }
             } catch (error) {
                 console.error('Error fetching videos:', error);
-                showError('videosGrid', 'Failed to load trending videos');
-                showToast('error', 'Error', 'Failed to fetch trending videos. Using cached data.');
-                loadMockData();
+                loadMockVideos();
+                showToast('error', 'Using Cached Data', 'Could not fetch live videos');
             }
         }
 
-        // Fetch Hashtag Info
-        async function fetchHashtagInfo(hashtag) {
-            try {
-                const data = await fetchFromAPI('/challenge/info', {
-                    challenge_name: hashtag
-                });
-                return data;
-            } catch (error) {
-                console.error('Error fetching hashtag:', error);
-                return null;
-            }
+        function showVideosLoading() {
+            const container = document.getElementById('videosGrid');
+            container.innerHTML = Array(6).fill().map(() => `
+                <div class="video-card">
+                    <div class="video-thumbnail skeleton" style="aspect-ratio: 9/12;"></div>
+                    <div class="video-info">
+                        <div class="skeleton" style="height: 16px; margin-bottom: 8px;"></div>
+                        <div class="skeleton" style="height: 12px; width: 60%;"></div>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        // Fetch Popular Hashtags
-        async function fetchPopularHashtags() {
-            // Since there's no direct endpoint for trending hashtags,
-            // we'll extract them from trending videos
-            const hashtagMap = new Map();
-
-            state.videos.forEach(video => {
-                const challenges = video.challenges || [];
-                challenges.forEach(challenge => {
-                    const existing = hashtagMap.get(challenge.title);
-                    if (existing) {
-                        existing.count++;
-                        existing.views += video.playCount || 0;
-                    } else {
-                        hashtagMap.set(challenge.title, {
-                            name: challenge.title,
-                            count: 1,
-                            views: video.playCount || 0,
-                            id: challenge.id
-                        });
-                    }
-                });
-            });
-
-            state.hashtags = Array.from(hashtagMap.values())
-                .sort((a, b) => b.count - a.count)
-                .slice(0, 8);
-
-            renderHashtags();
-            document.getElementById('hashtagCount').textContent = state.hashtags.length;
-        }
-
-        // Fetch Trending Sounds
-        async function fetchTrendingSounds() {
-            // Extract sounds from trending videos
-            const soundMap = new Map();
-
-            state.videos.forEach(video => {
-                const music = video.music;
-                if (music) {
-                    const existing = soundMap.get(music.id);
-                    if (existing) {
-                        existing.videoCount++;
-                        existing.totalViews += video.playCount || 0;
-                    } else {
-                        soundMap.set(music.id, {
-                            id: music.id,
-                            title: music.title || 'Original Sound',
-                            author: music.authorName || 'Unknown',
-                            coverUrl: music.coverLarge || music.coverMedium,
-                            videoCount: 1,
-                            totalViews: video.playCount || 0
-                        });
-                    }
-                }
-            });
-
-            state.sounds = Array.from(soundMap.values())
-                .sort((a, b) => b.videoCount - a.videoCount)
-                .slice(0, 6);
-
-            renderSounds();
-            document.getElementById('soundCount').textContent = state.sounds.length;
-        }
-
-        // Render Functions
         function renderVideos() {
             const container = document.getElementById('videosGrid');
             
             if (!state.videos.length) {
-                showError(container, 'No videos found');
+                container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fas fa-video-slash"></i>
+                        <p>No videos found. Try refreshing.</p>
+                    </div>
+                `;
                 return;
             }
 
-            container.innerHTML = state.videos.map((video, index) => {
+            container.innerHTML = state.videos.map(video => {
                 const score = video.trendScore;
                 const badge = getBadgeType(score);
-                const coverUrl = video.video?.cover || video.video?.originCover || video.cover || '';
+                const coverUrl = video.video?.cover || video.video?.originCover || '';
                 const author = video.author || {};
-                const growth = Math.floor(Math.random() * 500) + 100; // Simulated growth
+                const growth = Math.floor(Math.random() * 500) + 100;
 
                 return `
                     <div class="video-card" onclick="openVideoModal('${video.id}')">
                         <div class="video-thumbnail">
-                            <img src="${coverUrl}" alt="${video.desc || 'TikTok Video'}" 
-                                 onerror="this.src='https://via.placeholder.com/300x400/1a1a1a/666?text=No+Image'">
+                            <img src="${coverUrl}" alt="Video" 
+                                 onerror="this.src='https://via.placeholder.com/300x400/1a1a1a/666?text=TikTok'">
                             <span class="video-badge badge-${badge}">
                                 ${badge === 'viral' ? '🔥 Viral' : badge === 'rising' ? '📈 Rising' : '✨ New'}
                             </span>
@@ -1646,10 +1687,6 @@
                                     <i class="fas fa-heart"></i>
                                     ${formatNumber(video.diggCount || video.digg_count)}
                                 </span>
-                                <span class="video-stat">
-                                    <i class="fas fa-comment"></i>
-                                    ${formatNumber(video.commentCount || video.comment_count)}
-                                </span>
                             </div>
                         </div>
                         <div class="video-info">
@@ -1657,7 +1694,7 @@
                             <div class="video-author">
                                 <div class="author-avatar">
                                     ${author.avatarThumb ? 
-                                        `<img src="${author.avatarThumb}" alt="${author.nickname}">` :
+                                        `<img src="${author.avatarThumb}" alt="">` :
                                         (author.nickname || 'U').charAt(0).toUpperCase()
                                     }
                                 </div>
@@ -1675,124 +1712,194 @@
             }).join('');
         }
 
-        function renderHashtags() {
-            const container = document.getElementById('hashtagsList');
+        // Extract sounds from videos
+        function extractSoundsFromVideos() {
+            const soundMap = new Map();
 
-            if (!state.hashtags.length) {
-                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">No hashtags found</p>';
-                return;
-            }
+            state.videos.forEach(video => {
+                const music = video.music;
+                if (music) {
+                    const existing = soundMap.get(music.id);
+                    if (existing) {
+                        existing.videoCount++;
+                    } else {
+                        soundMap.set(music.id, {
+                            id: music.id,
+                            title: music.title || 'Original Sound',
+                            author: music.authorName || 'Unknown',
+                            coverUrl: music.coverLarge || music.coverMedium,
+                            videoCount: 1
+                        });
+                    }
+                }
+            });
 
-            container.innerHTML = state.hashtags.map((hashtag, index) => {
-                const growth = Math.floor(Math.random() * 800) + 100;
-                return `
-                    <div class="hashtag-item" onclick="searchHashtag('${hashtag.name}')">
-                        <div class="hashtag-rank">${index + 1}</div>
-                        <div class="hashtag-info">
-                            <div class="hashtag-name">#${hashtag.name}</div>
-                            <div class="hashtag-meta">${formatNumber(hashtag.views)} views • ${hashtag.count} videos</div>
-                        </div>
-                        <div class="hashtag-growth">
-                            <div class="hashtag-growth-value">+${growth}%</div>
-                            <div class="hashtag-growth-label">24h</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            state.sounds = Array.from(soundMap.values())
+                .sort((a, b) => b.videoCount - a.videoCount)
+                .slice(0, 6);
+
+            renderSounds();
+            document.getElementById('soundCount').textContent = state.sounds.length;
         }
 
         function renderSounds() {
             const container = document.getElementById('soundsList');
 
             if (!state.sounds.length) {
-                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">No sounds found</p>';
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-music"></i>
+                        <p>No sounds found</p>
+                    </div>
+                `;
                 return;
             }
 
-            container.innerHTML = state.sounds.map(sound => {
-                const growth = Math.floor(Math.random() * 500) + 50;
-                return `
-                    <div class="sound-item">
-                        <div class="sound-cover">
-                            ${sound.coverUrl ? 
-                                `<img src="${sound.coverUrl}" alt="${sound.title}">` :
-                                '<i class="fas fa-music"></i>'
-                            }
-                            <div class="sound-wave">
-                                <span></span><span></span><span></span><span></span>
-                            </div>
-                        </div>
-                        <div class="sound-info">
-                            <div class="sound-title">${sound.title}</div>
-                            <div class="sound-artist">${sound.author}</div>
-                        </div>
-                        <div class="sound-stats">
-                            <div class="sound-videos">${formatNumber(sound.videoCount)} videos</div>
-                            <div class="sound-growth">+${growth}%</div>
+            container.innerHTML = state.sounds.map(sound => `
+                <div class="sound-item">
+                    <div class="sound-cover">
+                        ${sound.coverUrl ? 
+                            `<img src="${sound.coverUrl}" alt="">` :
+                            '<i class="fas fa-music"></i>'
+                        }
+                        <div class="sound-wave">
+                            <span></span><span></span><span></span><span></span>
                         </div>
                     </div>
-                `;
-            }).join('');
+                    <div class="sound-info">
+                        <div class="sound-title">${sound.title}</div>
+                        <div class="sound-artist">${sound.author}</div>
+                    </div>
+                    <div class="sound-stats">
+                        <div class="sound-videos">${formatNumber(sound.videoCount)}</div>
+                        <div class="sound-growth">+${Math.floor(Math.random() * 300) + 50}%</div>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function renderPredictions() {
-            const container = document.getElementById('predictionsList');
-            
-            // Generate predictions based on current trends
             const predictions = [
-                { name: 'Slow-mo transition trend', time: '~2 hours', score: 96, icon: 'video' },
+                { name: 'Slow-mo transition', time: '~2 hours', score: 96, icon: 'video' },
                 { name: '#SummerVibes2024', time: '~4 hours', score: 93, icon: 'hashtag' },
-                { name: 'POV storytelling format', time: '~6 hours', score: 89, icon: 'film' },
-                { name: 'Duet chain challenge', time: '~8 hours', score: 85, icon: 'users' },
+                { name: 'POV storytelling', time: '~6 hours', score: 89, icon: 'film' },
+                { name: 'Duet challenge', time: '~8 hours', score: 85, icon: 'users' },
                 { name: '#ProductivityHacks', time: '~12 hours', score: 82, icon: 'lightbulb' }
             ];
 
-            container.innerHTML = predictions.map(pred => `
+            document.getElementById('predictionsList').innerHTML = predictions.map(pred => `
                 <div class="prediction-item">
                     <div class="prediction-icon">
                         <i class="fas fa-${pred.icon}"></i>
                     </div>
                     <div class="prediction-info">
                         <div class="prediction-name">${pred.name}</div>
-                        <div class="prediction-time">Going viral in ${pred.time}</div>
+                        <div class="prediction-time">Viral in ${pred.time}</div>
                     </div>
                     <div class="prediction-score">${pred.score}%</div>
                 </div>
             `).join('');
         }
 
-        // Loading & Error States
-        function showLoading(containerId) {
-            const container = document.getElementById(containerId);
-            const skeletons = Array(6).fill().map(() => `
-                <div class="loading-card">
-                    <div class="skeleton skeleton-thumbnail"></div>
-                    <div class="skeleton-content">
-                        <div class="skeleton skeleton-line"></div>
-                        <div class="skeleton skeleton-line"></div>
-                    </div>
-                </div>
-            `).join('');
-            container.innerHTML = skeletons;
+        // Mock data
+        function loadMockVideos() {
+            state.videos = [
+                {
+                    id: '1', desc: 'Amazing dance challenge! 💃 #dance #viral',
+                    playCount: 2400000, diggCount: 450000,
+                    video: { cover: 'https://picsum.photos/400/600?random=1' },
+                    author: { uniqueId: 'dancer1', nickname: 'Dance Queen' },
+                    music: { id: '1', title: 'Trending Beat', authorName: 'DJ Mix' },
+                    trendScore: 95
+                },
+                {
+                    id: '2', desc: 'This cooking hack is insane! 🍳 #food #lifehack',
+                    playCount: 1800000, diggCount: 320000,
+                    video: { cover: 'https://picsum.photos/400/600?random=2' },
+                    author: { uniqueId: 'chef1', nickname: 'Chef Pro' },
+                    music: { id: '2', title: 'Kitchen Vibes', authorName: 'Cook Beats' },
+                    trendScore: 91
+                },
+                {
+                    id: '3', desc: 'POV: Monday morning 😂 #comedy #relatable',
+                    playCount: 1500000, diggCount: 280000,
+                    video: { cover: 'https://picsum.photos/400/600?random=3' },
+                    author: { uniqueId: 'funny1', nickname: 'Comedy King' },
+                    music: { id: '3', title: 'Funny Sound', authorName: 'Viral Audio' },
+                    trendScore: 88
+                },
+                {
+                    id: '4', desc: 'Summer outfit check ✨ #fashion #ootd',
+                    playCount: 1200000, diggCount: 200000,
+                    video: { cover: 'https://picsum.photos/400/600?random=4' },
+                    author: { uniqueId: 'fashion1', nickname: 'Style Queen' },
+                    music: { id: '4', title: 'Fashion Walk', authorName: 'Runway' },
+                    trendScore: 85
+                },
+                {
+                    id: '5', desc: 'Gym motivation 💪 #fitness #workout',
+                    playCount: 900000, diggCount: 150000,
+                    video: { cover: 'https://picsum.photos/400/600?random=5' },
+                    author: { uniqueId: 'fit1', nickname: 'Fitness Pro' },
+                    music: { id: '5', title: 'Pump It', authorName: 'Gym Mix' },
+                    trendScore: 82
+                },
+                {
+                    id: '6', desc: 'Small business update 📦 #smallbusiness',
+                    playCount: 700000, diggCount: 120000,
+                    video: { cover: 'https://picsum.photos/400/600?random=6' },
+                    author: { uniqueId: 'biz1', nickname: 'Entrepreneur' },
+                    music: { id: '6', title: 'Business Mode', authorName: 'Success' },
+                    trendScore: 78
+                }
+            ];
+            renderVideos();
+            extractSoundsFromVideos();
+            document.getElementById('trendingCount').textContent = state.videos.length;
         }
 
-        function showError(containerId, message) {
-            const container = typeof containerId === 'string' ? 
-                document.getElementById(containerId) : containerId;
-            
-            container.innerHTML = `
-                <div class="error-state" style="grid-column: 1 / -1;">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <h3>Oops! Something went wrong</h3>
-                    <p>${message}</p>
-                    <button onclick="refreshData()">
-                        <i class="fas fa-sync-alt"></i> Try Again
-                    </button>
+        // Modal functions
+        function openVideoModal(videoId) {
+            const video = state.videos.find(v => v.id === videoId);
+            if (!video) return;
+
+            const modal = document.getElementById('videoModal');
+            document.getElementById('modalBody').innerHTML = `
+                <div style="text-align: center; padding: 2rem;">
+                    <h2 style="margin-bottom: 1rem;">${video.desc || 'Trending Video'}</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                        By @${video.author?.uniqueId || 'user'}
+                    </p>
+                    <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem;">
+                        <div>
+                            <div style="font-size: 1.5rem; font-weight: 700;">${formatNumber(video.playCount)}</div>
+                            <div style="color: var(--text-muted); font-size: 0.85rem;">Views</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.5rem; font-weight: 700;">${formatNumber(video.diggCount)}</div>
+                            <div style="color: var(--text-muted); font-size: 0.85rem;">Likes</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--success);">${video.trendScore}</div>
+                            <div style="color: var(--text-muted); font-size: 0.85rem;">Trend Score</div>
+                        </div>
+                    </div>
+                    <a href="https://www.tiktok.com/@${video.author?.uniqueId}/video/${video.id}" 
+                       target="_blank"
+                       style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--gradient); color: white; padding: 0.75rem 1.5rem; border-radius: 10px; text-decoration: none; font-weight: 600;">
+                        <i class="fab fa-tiktok"></i>
+                        Watch on TikTok
+                    </a>
                 </div>
             `;
+            modal.classList.add('active');
         }
 
-        // Toast Notifications
+        function closeModal() {
+            document.getElementById('videoModal').classList.remove('active');
+        }
+
+        // Toast notifications
         function showToast(type, title, message) {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -1814,288 +1921,38 @@
             }, 4000);
         }
 
-        // Modal Functions
-        function openVideoModal(videoId) {
-            const video = state.videos.find(v => v.id === videoId);
-            if (!video) return;
-
-            const modal = document.getElementById('videoModal');
-            const modalBody = document.getElementById('modalBody');
-
-            const videoUrl = video.video?.playAddr || video.video?.downloadAddr || '';
-
-            modalBody.innerHTML = `
-                <div class="modal-video">
-                    <div class="modal-video-player">
-                        ${videoUrl ? 
-                            `<video controls autoplay loop>
-                                <source src="${videoUrl}" type="video/mp4">
-                            </video>` :
-                            `<div style="height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--text-muted);">
-                                <i class="fas fa-video-slash" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                                <p>Video preview not available</p>
-                                <a href="https://www.tiktok.com/@${video.author?.uniqueId}/video/${video.id}" 
-                                   target="_blank" 
-                                   style="color: var(--secondary); margin-top: 0.5rem;">
-                                    Watch on TikTok <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </div>`
-                        }
-                    </div>
-                    <div class="modal-video-info">
-                        <h2>${video.desc || 'Trending Video'}</h2>
-                        
-                        <div class="video-author" style="margin-bottom: 1.5rem;">
-                            <div class="author-avatar" style="width: 40px; height: 40px; font-size: 1rem;">
-                                ${video.author?.avatarThumb ? 
-                                    `<img src="${video.author.avatarThumb}" alt="">` :
-                                    (video.author?.nickname || 'U').charAt(0)
-                                }
-                            </div>
-                            <div>
-                                <div style="font-weight: 600;">@${video.author?.uniqueId || 'user'}</div>
-                                <div style="color: var(--text-muted); font-size: 0.85rem;">
-                                    ${video.author?.nickname || 'TikTok User'}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal-stats-grid">
-                            <div class="modal-stat">
-                                <div class="modal-stat-value">${formatNumber(video.playCount)}</div>
-                                <div class="modal-stat-label">Views</div>
-                            </div>
-                            <div class="modal-stat">
-                                <div class="modal-stat-value">${formatNumber(video.diggCount)}</div>
-                                <div class="modal-stat-label">Likes</div>
-                            </div>
-                            <div class="modal-stat">
-                                <div class="modal-stat-value">${formatNumber(video.shareCount)}</div>
-                                <div class="modal-stat-label">Shares</div>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: 1.5rem;">
-                            <h4 style="margin-bottom: 0.75rem; color: var(--text-muted); font-size: 0.9rem;">
-                                TREND SCORE
-                            </h4>
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div style="flex: 1; height: 8px; background: var(--dark-lighter); border-radius: 4px; overflow: hidden;">
-                                    <div style="width: ${video.trendScore}%; height: 100%; background: var(--gradient); border-radius: 4px;"></div>
-                                </div>
-                                <span style="font-size: 1.5rem; font-weight: 700; color: var(--success);">
-                                    ${video.trendScore}
-                                </span>
-                            </div>
-                        </div>
-
-                        ${video.challenges?.length ? `
-                            <div style="margin-bottom: 1.5rem;">
-                                <h4 style="margin-bottom: 0.75rem; color: var(--text-muted); font-size: 0.9rem;">
-                                    HASHTAGS
-                                </h4>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                                    ${video.challenges.map(c => `
-                                        <span style="background: rgba(37, 244, 238, 0.15); color: var(--secondary); padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.85rem;">
-                                            #${c.title}
-                                        </span>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        ` : ''}
-
-                        <a href="https://www.tiktok.com/@${video.author?.uniqueId}/video/${video.id}" 
-                           target="_blank"
-                           style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--gradient); color: white; padding: 0.75rem 1.5rem; border-radius: 10px; text-decoration: none; font-weight: 600;">
-                            <i class="fab fa-tiktok"></i>
-                            Open in TikTok
-                        </a>
-                    </div>
-                </div>
-            `;
-
-            modal.classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('videoModal').classList.remove('active');
-            const video = document.querySelector('.modal-video-player video');
-            if (video) video.pause();
-        }
-
-        // Search Function
-        async function searchHashtag(hashtag) {
-            showToast('success', 'Searching', `Looking for #${hashtag} videos...`);
-            try {
-                const data = await fetchFromAPI('/challenge/posts', {
-                    challenge_name: hashtag,
-                    count: '20'
-                });
-
-                if (data && data.data && data.data.videos) {
-                    state.videos = data.data.videos.map(video => ({
-                        ...video,
-                        trendScore: calculateTrendScore(video),
-                        category: getVideoCategory(video)
-                    }));
-                    renderVideos();
-                    showToast('success', 'Found', `${state.videos.length} videos for #${hashtag}`);
-                }
-            } catch (error) {
-                showToast('error', 'Error', `Couldn't find videos for #${hashtag}`);
-            }
-        }
-
-        // Refresh Data
-        async function refreshData() {
+        // Refresh all data
+        async function refreshAllData() {
             const btn = document.getElementById('refreshBtn');
             btn.classList.add('spinning');
-            
-            await fetchTrendingVideos();
-            await fetchPopularHashtags();
-            await fetchTrendingSounds();
+
+            await Promise.all([
+                fetchTrendingVideos(),
+                fetchTrendingHashtags()
+            ]);
+
             renderPredictions();
-            
-            state.lastUpdate = new Date();
             btn.classList.remove('spinning');
-        }
-
-        // Mock Data Fallback
-        function loadMockData() {
-            state.videos = [
-                {
-                    id: '1',
-                    desc: 'Amazing dance challenge that everyone is trying! 💃 #dance #viral #trending',
-                    playCount: 2400000,
-                    diggCount: 450000,
-                    commentCount: 12000,
-                    shareCount: 35000,
-                    video: { cover: 'https://picsum.photos/400/600?random=1' },
-                    author: { uniqueId: 'dancequeen', nickname: 'Dance Queen', avatarThumb: '' },
-                    challenges: [{ title: 'dance' }, { title: 'viral' }],
-                    music: { id: '1', title: 'Trending Beat', authorName: 'DJ Mix' },
-                    trendScore: 95
-                },
-                {
-                    id: '2',
-                    desc: 'This cooking hack will change your life! 🍳 #food #cooking #lifehack',
-                    playCount: 1800000,
-                    diggCount: 320000,
-                    commentCount: 8000,
-                    shareCount: 25000,
-                    video: { cover: 'https://picsum.photos/400/600?random=2' },
-                    author: { uniqueId: 'chefmaster', nickname: 'Chef Master', avatarThumb: '' },
-                    challenges: [{ title: 'food' }, { title: 'cooking' }],
-                    music: { id: '2', title: 'Cooking Vibes', authorName: 'Kitchen Beats' },
-                    trendScore: 91
-                },
-                {
-                    id: '3',
-                    desc: 'POV: You finally understand the assignment 📚 #comedy #relatable',
-                    playCount: 1500000,
-                    diggCount: 280000,
-                    commentCount: 15000,
-                    shareCount: 20000,
-                    video: { cover: 'https://picsum.photos/400/600?random=3' },
-                    author: { uniqueId: 'funnypage', nickname: 'Funny Page', avatarThumb: '' },
-                    challenges: [{ title: 'comedy' }, { title: 'relatable' }],
-                    music: { id: '3', title: 'Comedy Sound', authorName: 'Viral Audio' },
-                    trendScore: 88
-                },
-                {
-                    id: '4',
-                    desc: 'Outfit check for summer 2024 ✨ #fashion #ootd #style',
-                    playCount: 1200000,
-                    diggCount: 200000,
-                    commentCount: 5000,
-                    shareCount: 15000,
-                    video: { cover: 'https://picsum.photos/400/600?random=4' },
-                    author: { uniqueId: 'fashionista', nickname: 'Style Queen', avatarThumb: '' },
-                    challenges: [{ title: 'fashion' }, { title: 'ootd' }],
-                    music: { id: '4', title: 'Fashion Walk', authorName: 'Runway Beats' },
-                    trendScore: 85
-                },
-                {
-                    id: '5',
-                    desc: 'This workout changed everything 💪 #fitness #gym #workout',
-                    playCount: 900000,
-                    diggCount: 150000,
-                    commentCount: 4000,
-                    shareCount: 10000,
-                    video: { cover: 'https://picsum.photos/400/600?random=5' },
-                    author: { uniqueId: 'fitpro', nickname: 'Fitness Pro', avatarThumb: '' },
-                    challenges: [{ title: 'fitness' }, { title: 'gym' }],
-                    music: { id: '5', title: 'Pump It Up', authorName: 'Gym Mix' },
-                    trendScore: 82
-                },
-                {
-                    id: '6',
-                    desc: 'Small business update! New products dropping soon 📦 #smallbusiness',
-                    playCount: 700000,
-                    diggCount: 120000,
-                    commentCount: 3000,
-                    shareCount: 8000,
-                    video: { cover: 'https://picsum.photos/400/600?random=6' },
-                    author: { uniqueId: 'shopowner', nickname: 'Small Biz Owner', avatarThumb: '' },
-                    challenges: [{ title: 'smallbusiness' }, { title: 'entrepreneur' }],
-                    music: { id: '6', title: 'Business Mode', authorName: 'Success Sounds' },
-                    trendScore: 78
-                }
-            ];
-
-            state.hashtags = [
-                { name: 'dance', count: 15, views: 5000000 },
-                { name: 'viral', count: 12, views: 4500000 },
-                { name: 'food', count: 10, views: 3800000 },
-                { name: 'comedy', count: 9, views: 3200000 },
-                { name: 'fashion', count: 8, views: 2800000 },
-                { name: 'fitness', count: 7, views: 2400000 },
-                { name: 'smallbusiness', count: 6, views: 1900000 },
-                { name: 'lifehack', count: 5, views: 1500000 }
-            ];
-
-            state.sounds = [
-                { id: '1', title: 'Trending Beat', author: 'DJ Mix', videoCount: 15000, coverUrl: '' },
-                { id: '2', title: 'Cooking Vibes', author: 'Kitchen Beats', videoCount: 12000, coverUrl: '' },
-                { id: '3', title: 'Comedy Sound', author: 'Viral Audio', videoCount: 9000, coverUrl: '' },
-                { id: '4', title: 'Fashion Walk', author: 'Runway Beats', videoCount: 7500, coverUrl: '' },
-                { id: '5', title: 'Pump It Up', author: 'Gym Mix', videoCount: 6000, coverUrl: '' },
-                { id: '6', title: 'Business Mode', author: 'Success Sounds', videoCount: 4500, coverUrl: '' }
-            ];
-
-            renderVideos();
-            renderHashtags();
-            renderSounds();
-            renderPredictions();
-
-            document.getElementById('trendingCount').textContent = state.videos.length;
-            document.getElementById('hashtagCount').textContent = state.hashtags.length;
-            document.getElementById('soundCount').textContent = state.sounds.length;
+            showToast('success', 'Data Refreshed', 'All trends updated successfully');
         }
 
         // Event Listeners
-        document.getElementById('refreshBtn').addEventListener('click', refreshData);
+        document.getElementById('refreshBtn').addEventListener('click', refreshAllData);
 
         document.querySelectorAll('.filter-chip').forEach(chip => {
             chip.addEventListener('click', function() {
                 document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
                 this.classList.add('active');
-                state.currentRegion = this.dataset.region || 'us';
-                refreshData();
-            });
-        });
-
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
+                state.currentRegion = this.dataset.region;
+                fetchTrendingVideos();
             });
         });
 
         document.getElementById('searchInput').addEventListener('keypress', async function(e) {
             if (e.key === 'Enter' && this.value.trim()) {
                 const query = this.value.trim().replace('#', '');
-                await searchHashtag(query);
+                await exploreHashtag(query);
+                this.value = '';
             }
         });
 
@@ -2109,10 +1966,12 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            refreshData();
-            
+            fetchTrendingVideos();
+            fetchTrendingHashtags();
+            renderPredictions();
+
             // Auto-refresh every 5 minutes
-            setInterval(refreshData, 300000);
+            setInterval(refreshAllData, 300000);
         });
     </script>
 </body>
