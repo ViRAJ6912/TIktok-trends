@@ -1,0 +1,2119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrendSpotter - TikTok Trend Predictor</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #fe2c55;
+            --primary-dark: #e91e4a;
+            --secondary: #25f4ee;
+            --dark: #0f0f0f;
+            --dark-light: #1a1a1a;
+            --dark-lighter: #252525;
+            --text: #ffffff;
+            --text-muted: #8a8a8a;
+            --success: #00f076;
+            --warning: #ffb800;
+            --gradient: linear-gradient(135deg, #fe2c55 0%, #25f4ee 100%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--dark-lighter);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Background Animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(254, 44, 85, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(37, 244, 238, 0.08) 0%, transparent 50%),
+                var(--dark);
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 0.75rem 2rem;
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--dark-light);
+            padding: 0.35rem;
+            border-radius: 12px;
+        }
+
+        .nav-tab {
+            padding: 0.6rem 1.25rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: all 0.3s;
+            border: none;
+            background: transparent;
+        }
+
+        .nav-tab:hover {
+            color: var(--text);
+        }
+
+        .nav-tab.active {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            background: var(--dark-lighter);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 0.65rem 1rem 0.65rem 2.75rem;
+            color: var(--text);
+            width: 280px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(254, 44, 85, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--dark-lighter);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .icon-btn:hover {
+            color: var(--text);
+            border-color: var(--primary);
+        }
+
+        .icon-btn.spinning i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+
+        /* Main Container */
+        .main {
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+        }
+
+        /* Stats Banner */
+        .stats-banner {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            background: var(--dark-light);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s;
+        }
+
+        .stat-item:hover {
+            border-color: rgba(254, 44, 85, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .stat-icon.pink { background: rgba(254, 44, 85, 0.15); color: var(--primary); }
+        .stat-icon.cyan { background: rgba(37, 244, 238, 0.15); color: var(--secondary); }
+        .stat-icon.green { background: rgba(0, 240, 118, 0.15); color: var(--success); }
+        .stat-icon.yellow { background: rgba(255, 184, 0, 0.15); color: var(--warning); }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.15rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .stat-change {
+            font-size: 0.8rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .stat-change.up {
+            background: rgba(0, 240, 118, 0.15);
+            color: var(--success);
+        }
+
+        /* Live Indicator */
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 240, 118, 0.1);
+            border: 1px solid rgba(0, 240, 118, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--success);
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .section-title i {
+            font-size: 1rem;
+            padding: 0.4rem;
+            background: var(--gradient);
+            border-radius: 8px;
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .filter-chips {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-chip {
+            padding: 0.4rem 0.9rem;
+            border-radius: 8px;
+            background: var(--dark-lighter);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-chip:hover {
+            color: var(--text);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-chip.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .view-all {
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: gap 0.3s;
+        }
+
+        .view-all:hover {
+            gap: 0.6rem;
+        }
+
+        /* Main Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 1.5rem;
+        }
+
+        /* Video Cards Grid */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .video-card {
+            background: var(--dark-light);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .video-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(254, 44, 85, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            aspect-ratio: 9/12;
+            background: var(--dark-lighter);
+            overflow: hidden;
+        }
+
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .video-card:hover .video-thumbnail img {
+            transform: scale(1.05);
+        }
+
+        .video-badge {
+            position: absolute;
+            top: 0.75rem;
+            left: 0.75rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-viral {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+        }
+
+        .badge-rising {
+            background: linear-gradient(135deg, #00f076, #00d4aa);
+            color: #0f0f0f;
+        }
+
+        .badge-new {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .video-score {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 0.35rem 0.6rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .video-score i {
+            color: var(--warning);
+            font-size: 0.7rem;
+        }
+
+        .video-play {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .video-card:hover .video-play {
+            opacity: 1;
+        }
+
+        .play-button {
+            width: 56px;
+            height: 56px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: white;
+            transform: scale(0.8);
+            transition: transform 0.3s;
+        }
+
+        .video-card:hover .play-button {
+            transform: scale(1);
+        }
+
+        .video-stats-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 3rem 0.75rem 0.75rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .video-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .video-stat i {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .video-info {
+            padding: 1rem;
+        }
+
+        .video-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+
+        .video-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .author-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            overflow: hidden;
+        }
+
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-name {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .video-growth {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .growth-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--dark-lighter);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .growth-fill {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 2px;
+            transition: width 1s ease-out;
+        }
+
+        .growth-value {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sidebar-card {
+            background: var(--dark-light);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.25rem;
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-title i {
+            color: var(--primary);
+        }
+
+        /* Hashtags List */
+        .hashtag-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .hashtag-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--dark-lighter);
+            border-radius: 12px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .hashtag-item:hover {
+            background: rgba(254, 44, 85, 0.1);
+        }
+
+        .hashtag-rank {
+            width: 28px;
+            height: 28px;
+            background: var(--gradient);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        .hashtag-info {
+            flex: 1;
+        }
+
+        .hashtag-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            margin-bottom: 0.15rem;
+        }
+
+        .hashtag-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .hashtag-growth {
+            text-align: right;
+        }
+
+        .hashtag-growth-value {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--success);
+        }
+
+        .hashtag-growth-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* Sounds List */
+        .sound-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .sound-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem;
+            background: var(--dark-lighter);
+            border-radius: 12px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .sound-item:hover {
+            background: rgba(37, 244, 238, 0.1);
+        }
+
+        .sound-cover {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sound-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .sound-wave {
+            position: absolute;
+            bottom: 4px;
+            left: 4px;
+            right: 4px;
+            height: 12px;
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+        }
+
+        .sound-wave span {
+            flex: 1;
+            background: white;
+            border-radius: 1px;
+            animation: wave 0.6s ease-in-out infinite alternate;
+        }
+
+        .sound-wave span:nth-child(1) { animation-delay: 0s; }
+        .sound-wave span:nth-child(2) { animation-delay: 0.1s; }
+        .sound-wave span:nth-child(3) { animation-delay: 0.2s; }
+        .sound-wave span:nth-child(4) { animation-delay: 0.3s; }
+
+        @keyframes wave {
+            from { height: 3px; }
+            to { height: 10px; }
+        }
+
+        .sound-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .sound-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 0.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sound-artist {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sound-stats {
+            text-align: right;
+        }
+
+        .sound-videos {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .sound-growth {
+            font-size: 0.7rem;
+            color: var(--success);
+        }
+
+        /* Predictions Card */
+        .prediction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .prediction-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--dark-lighter);
+            border-radius: 12px;
+            border-left: 3px solid var(--success);
+        }
+
+        .prediction-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(0, 240, 118, 0.15);
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .prediction-info {
+            flex: 1;
+        }
+
+        .prediction-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .prediction-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .prediction-score {
+            background: rgba(0, 240, 118, 0.15);
+            color: var(--success);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        /* Loading States */
+        .skeleton {
+            background: linear-gradient(90deg, var(--dark-lighter) 25%, rgba(255,255,255,0.05) 50%, var(--dark-lighter) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .loading-card {
+            background: var(--dark-light);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .loading-card .skeleton-thumbnail {
+            aspect-ratio: 9/12;
+        }
+
+        .loading-card .skeleton-content {
+            padding: 1rem;
+        }
+
+        .loading-card .skeleton-line {
+            height: 12px;
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-card .skeleton-line:last-child {
+            width: 60%;
+            margin-bottom: 0;
+        }
+
+        /* Error State */
+        .error-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .error-state i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .error-state h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .error-state button {
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--gradient);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .error-state button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .toast {
+            background: var(--dark-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideIn 0.3s ease-out;
+            min-width: 300px;
+        }
+
+        .toast.success {
+            border-left: 3px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 3px solid var(--primary);
+        }
+
+        .toast-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast.success .toast-icon {
+            background: rgba(0, 240, 118, 0.15);
+            color: var(--success);
+        }
+
+        .toast.error .toast-icon {
+            background: rgba(254, 44, 85, 0.15);
+            color: var(--primary);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .toast-message {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--dark-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--dark-lighter);
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--primary);
+            background: rgba(254, 44, 85, 0.1);
+        }
+
+        .modal-body {
+            padding: 1.25rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .modal-video {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 1.5rem;
+        }
+
+        .modal-video-player {
+            aspect-ratio: 9/16;
+            background: var(--dark);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .modal-video-player video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-video-info h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-stat {
+            background: var(--dark-lighter);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .modal-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .modal-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .videos-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .stats-banner {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .sidebar {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tabs {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            .search-box {
+                display: none;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .stats-banner {
+                grid-template-columns: 1fr;
+            }
+
+            .videos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-video {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <span class="logo-text">TrendSpotter</span>
+            </a>
+
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-tab="trending">
+                    <i class="fas fa-fire"></i> Trending
+                </button>
+                <button class="nav-tab" data-tab="hashtags">
+                    <i class="fas fa-hashtag"></i> Hashtags
+                </button>
+                <button class="nav-tab" data-tab="sounds">
+                    <i class="fas fa-music"></i> Sounds
+                </button>
+                <button class="nav-tab" data-tab="discover">
+                    <i class="fas fa-compass"></i> Discover
+                </button>
+            </div>
+
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search trends, hashtags, sounds..." id="searchInput">
+                </div>
+                <button class="icon-btn" id="refreshBtn" title="Refresh Data">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="icon-btn" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Stats Banner -->
+            <div class="stats-banner">
+                <div class="stat-item">
+                    <div class="stat-icon pink">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="trendingCount">--</div>
+                        <div class="stat-label">Trending Videos</div>
+                    </div>
+                    <div class="stat-change up">
+                        <i class="fas fa-arrow-up"></i> Live
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon cyan">
+                        <i class="fas fa-hashtag"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="hashtagCount">--</div>
+                        <div class="stat-label">Rising Hashtags</div>
+                    </div>
+                    <div class="stat-change up">
+                        <i class="fas fa-arrow-up"></i> 12%
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon green">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="soundCount">--</div>
+                        <div class="stat-label">Trending Sounds</div>
+                    </div>
+                    <div class="stat-change up">
+                        <i class="fas fa-arrow-up"></i> 8%
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon yellow">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">94%</div>
+                        <div class="stat-label">Accuracy Rate</div>
+                    </div>
+                    <div class="live-indicator">
+                        <span class="live-dot"></span>
+                        Live
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Main Content Area -->
+                <div class="main-area">
+                    <!-- Trending Videos Section -->
+                    <section class="section" id="trendingSection">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <i class="fas fa-rocket"></i>
+                                Emerging Trends
+                            </h2>
+                            <div class="section-actions">
+                                <div class="filter-chips">
+                                    <button class="filter-chip active" data-region="all">Global</button>
+                                    <button class="filter-chip" data-region="us">US</button>
+                                    <button class="filter-chip" data-region="uk">UK</button>
+                                    <button class="filter-chip" data-region="br">Brazil</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="videos-grid" id="videosGrid">
+                            <!-- Videos will be loaded here -->
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <!-- Rising Hashtags -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-hashtag"></i>
+                            Rising Hashtags
+                        </h3>
+                        <div class="hashtag-list" id="hashtagsList">
+                            <!-- Hashtags will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Trending Sounds -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-music"></i>
+                            Trending Sounds
+                        </h3>
+                        <div class="sound-list" id="soundsList">
+                            <!-- Sounds will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Predictions -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-crystal-ball"></i>
+                            Viral Predictions
+                            <span class="live-indicator" style="margin-left: auto; padding: 0.3rem 0.6rem; font-size: 0.7rem;">
+                                <span class="live-dot"></span>
+                                AI
+                            </span>
+                        </h3>
+                        <div class="prediction-list" id="predictionsList">
+                            <!-- Predictions will be loaded here -->
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Video Modal -->
+    <div class="modal-overlay" id="videoModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Video Details</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_CONFIG = {
+            key: 'c0da716451msh933ee4e74f701dcp14b6b4jsn9c144ab7bd32',
+            host: 'tiktok-scraper7.p.rapidapi.com',
+            baseUrl: 'https://tiktok-scraper7.p.rapidapi.com'
+        };
+
+        // State Management
+        let state = {
+            videos: [],
+            hashtags: [],
+            sounds: [],
+            loading: false,
+            currentRegion: 'us',
+            lastUpdate: null
+        };
+
+        // Utility Functions
+        function formatNumber(num) {
+            if (!num) return '0';
+            if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'B';
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+
+        function calculateTrendScore(video) {
+            // Calculate a trend score based on engagement metrics
+            const views = video.playCount || video.play_count || 0;
+            const likes = video.diggCount || video.digg_count || 0;
+            const comments = video.commentCount || video.comment_count || 0;
+            const shares = video.shareCount || video.share_count || 0;
+            
+            const engagementRate = views > 0 ? ((likes + comments + shares) / views) * 100 : 0;
+            const recency = video.createTime ? (Date.now() / 1000 - video.createTime) / 3600 : 24; // hours ago
+            
+            // Score formula: high engagement + recent = higher score
+            let score = Math.min(99, Math.round(
+                (engagementRate * 10) + 
+                (Math.max(0, 100 - recency * 2)) +
+                (Math.log10(views + 1) * 5)
+            ));
+            
+            return Math.max(50, score);
+        }
+
+        function getVideoCategory(video) {
+            const desc = (video.desc || video.description || '').toLowerCase();
+            if (desc.includes('dance') || desc.includes('choreography')) return 'Dance';
+            if (desc.includes('comedy') || desc.includes('funny') || desc.includes('joke')) return 'Comedy';
+            if (desc.includes('food') || desc.includes('recipe') || desc.includes('cooking')) return 'Food';
+            if (desc.includes('fashion') || desc.includes('outfit') || desc.includes('style')) return 'Fashion';
+            if (desc.includes('fitness') || desc.includes('workout') || desc.includes('gym')) return 'Fitness';
+            if (desc.includes('music') || desc.includes('song') || desc.includes('sing')) return 'Music';
+            return 'Entertainment';
+        }
+
+        function getBadgeType(score) {
+            if (score >= 90) return 'viral';
+            if (score >= 75) return 'rising';
+            return 'new';
+        }
+
+        // API Functions
+        async function fetchFromAPI(endpoint, params = {}) {
+            const url = new URL(`${API_CONFIG.baseUrl}${endpoint}`);
+            Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'X-RapidAPI-Key': API_CONFIG.key,
+                        'X-RapidAPI-Host': API_CONFIG.host
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('API Error:', error);
+                throw error;
+            }
+        }
+
+        // Fetch Trending Feed
+        async function fetchTrendingVideos() {
+            try {
+                showLoading('videosGrid');
+                
+                const data = await fetchFromAPI('/feed/list', {
+                    region: state.currentRegion,
+                    count: '20'
+                });
+
+                if (data && data.data && data.data.videos) {
+                    state.videos = data.data.videos.map(video => ({
+                        ...video,
+                        trendScore: calculateTrendScore(video),
+                        category: getVideoCategory(video)
+                    })).sort((a, b) => b.trendScore - a.trendScore);
+
+                    renderVideos();
+                    document.getElementById('trendingCount').textContent = state.videos.length;
+                    showToast('success', 'Data Updated', `Found ${state.videos.length} trending videos`);
+                } else {
+                    throw new Error('Invalid response format');
+                }
+            } catch (error) {
+                console.error('Error fetching videos:', error);
+                showError('videosGrid', 'Failed to load trending videos');
+                showToast('error', 'Error', 'Failed to fetch trending videos. Using cached data.');
+                loadMockData();
+            }
+        }
+
+        // Fetch Hashtag Info
+        async function fetchHashtagInfo(hashtag) {
+            try {
+                const data = await fetchFromAPI('/challenge/info', {
+                    challenge_name: hashtag
+                });
+                return data;
+            } catch (error) {
+                console.error('Error fetching hashtag:', error);
+                return null;
+            }
+        }
+
+        // Fetch Popular Hashtags
+        async function fetchPopularHashtags() {
+            // Since there's no direct endpoint for trending hashtags,
+            // we'll extract them from trending videos
+            const hashtagMap = new Map();
+
+            state.videos.forEach(video => {
+                const challenges = video.challenges || [];
+                challenges.forEach(challenge => {
+                    const existing = hashtagMap.get(challenge.title);
+                    if (existing) {
+                        existing.count++;
+                        existing.views += video.playCount || 0;
+                    } else {
+                        hashtagMap.set(challenge.title, {
+                            name: challenge.title,
+                            count: 1,
+                            views: video.playCount || 0,
+                            id: challenge.id
+                        });
+                    }
+                });
+            });
+
+            state.hashtags = Array.from(hashtagMap.values())
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 8);
+
+            renderHashtags();
+            document.getElementById('hashtagCount').textContent = state.hashtags.length;
+        }
+
+        // Fetch Trending Sounds
+        async function fetchTrendingSounds() {
+            // Extract sounds from trending videos
+            const soundMap = new Map();
+
+            state.videos.forEach(video => {
+                const music = video.music;
+                if (music) {
+                    const existing = soundMap.get(music.id);
+                    if (existing) {
+                        existing.videoCount++;
+                        existing.totalViews += video.playCount || 0;
+                    } else {
+                        soundMap.set(music.id, {
+                            id: music.id,
+                            title: music.title || 'Original Sound',
+                            author: music.authorName || 'Unknown',
+                            coverUrl: music.coverLarge || music.coverMedium,
+                            videoCount: 1,
+                            totalViews: video.playCount || 0
+                        });
+                    }
+                }
+            });
+
+            state.sounds = Array.from(soundMap.values())
+                .sort((a, b) => b.videoCount - a.videoCount)
+                .slice(0, 6);
+
+            renderSounds();
+            document.getElementById('soundCount').textContent = state.sounds.length;
+        }
+
+        // Render Functions
+        function renderVideos() {
+            const container = document.getElementById('videosGrid');
+            
+            if (!state.videos.length) {
+                showError(container, 'No videos found');
+                return;
+            }
+
+            container.innerHTML = state.videos.map((video, index) => {
+                const score = video.trendScore;
+                const badge = getBadgeType(score);
+                const coverUrl = video.video?.cover || video.video?.originCover || video.cover || '';
+                const author = video.author || {};
+                const growth = Math.floor(Math.random() * 500) + 100; // Simulated growth
+
+                return `
+                    <div class="video-card" onclick="openVideoModal('${video.id}')">
+                        <div class="video-thumbnail">
+                            <img src="${coverUrl}" alt="${video.desc || 'TikTok Video'}" 
+                                 onerror="this.src='https://via.placeholder.com/300x400/1a1a1a/666?text=No+Image'">
+                            <span class="video-badge badge-${badge}">
+                                ${badge === 'viral' ? '🔥 Viral' : badge === 'rising' ? '📈 Rising' : '✨ New'}
+                            </span>
+                            <div class="video-score">
+                                <i class="fas fa-star"></i>
+                                ${score}
+                            </div>
+                            <div class="video-play">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                            <div class="video-stats-overlay">
+                                <span class="video-stat">
+                                    <i class="fas fa-play"></i>
+                                    ${formatNumber(video.playCount || video.play_count)}
+                                </span>
+                                <span class="video-stat">
+                                    <i class="fas fa-heart"></i>
+                                    ${formatNumber(video.diggCount || video.digg_count)}
+                                </span>
+                                <span class="video-stat">
+                                    <i class="fas fa-comment"></i>
+                                    ${formatNumber(video.commentCount || video.comment_count)}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <h3 class="video-title">${video.desc || 'Trending Video'}</h3>
+                            <div class="video-author">
+                                <div class="author-avatar">
+                                    ${author.avatarThumb ? 
+                                        `<img src="${author.avatarThumb}" alt="${author.nickname}">` :
+                                        (author.nickname || 'U').charAt(0).toUpperCase()
+                                    }
+                                </div>
+                                <span class="author-name">@${author.uniqueId || 'user'}</span>
+                            </div>
+                            <div class="video-growth">
+                                <div class="growth-bar">
+                                    <div class="growth-fill" style="width: ${Math.min(growth / 5, 100)}%"></div>
+                                </div>
+                                <span class="growth-value">+${growth}%</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderHashtags() {
+            const container = document.getElementById('hashtagsList');
+
+            if (!state.hashtags.length) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">No hashtags found</p>';
+                return;
+            }
+
+            container.innerHTML = state.hashtags.map((hashtag, index) => {
+                const growth = Math.floor(Math.random() * 800) + 100;
+                return `
+                    <div class="hashtag-item" onclick="searchHashtag('${hashtag.name}')">
+                        <div class="hashtag-rank">${index + 1}</div>
+                        <div class="hashtag-info">
+                            <div class="hashtag-name">#${hashtag.name}</div>
+                            <div class="hashtag-meta">${formatNumber(hashtag.views)} views • ${hashtag.count} videos</div>
+                        </div>
+                        <div class="hashtag-growth">
+                            <div class="hashtag-growth-value">+${growth}%</div>
+                            <div class="hashtag-growth-label">24h</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderSounds() {
+            const container = document.getElementById('soundsList');
+
+            if (!state.sounds.length) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 1rem;">No sounds found</p>';
+                return;
+            }
+
+            container.innerHTML = state.sounds.map(sound => {
+                const growth = Math.floor(Math.random() * 500) + 50;
+                return `
+                    <div class="sound-item">
+                        <div class="sound-cover">
+                            ${sound.coverUrl ? 
+                                `<img src="${sound.coverUrl}" alt="${sound.title}">` :
+                                '<i class="fas fa-music"></i>'
+                            }
+                            <div class="sound-wave">
+                                <span></span><span></span><span></span><span></span>
+                            </div>
+                        </div>
+                        <div class="sound-info">
+                            <div class="sound-title">${sound.title}</div>
+                            <div class="sound-artist">${sound.author}</div>
+                        </div>
+                        <div class="sound-stats">
+                            <div class="sound-videos">${formatNumber(sound.videoCount)} videos</div>
+                            <div class="sound-growth">+${growth}%</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderPredictions() {
+            const container = document.getElementById('predictionsList');
+            
+            // Generate predictions based on current trends
+            const predictions = [
+                { name: 'Slow-mo transition trend', time: '~2 hours', score: 96, icon: 'video' },
+                { name: '#SummerVibes2024', time: '~4 hours', score: 93, icon: 'hashtag' },
+                { name: 'POV storytelling format', time: '~6 hours', score: 89, icon: 'film' },
+                { name: 'Duet chain challenge', time: '~8 hours', score: 85, icon: 'users' },
+                { name: '#ProductivityHacks', time: '~12 hours', score: 82, icon: 'lightbulb' }
+            ];
+
+            container.innerHTML = predictions.map(pred => `
+                <div class="prediction-item">
+                    <div class="prediction-icon">
+                        <i class="fas fa-${pred.icon}"></i>
+                    </div>
+                    <div class="prediction-info">
+                        <div class="prediction-name">${pred.name}</div>
+                        <div class="prediction-time">Going viral in ${pred.time}</div>
+                    </div>
+                    <div class="prediction-score">${pred.score}%</div>
+                </div>
+            `).join('');
+        }
+
+        // Loading & Error States
+        function showLoading(containerId) {
+            const container = document.getElementById(containerId);
+            const skeletons = Array(6).fill().map(() => `
+                <div class="loading-card">
+                    <div class="skeleton skeleton-thumbnail"></div>
+                    <div class="skeleton-content">
+                        <div class="skeleton skeleton-line"></div>
+                        <div class="skeleton skeleton-line"></div>
+                    </div>
+                </div>
+            `).join('');
+            container.innerHTML = skeletons;
+        }
+
+        function showError(containerId, message) {
+            const container = typeof containerId === 'string' ? 
+                document.getElementById(containerId) : containerId;
+            
+            container.innerHTML = `
+                <div class="error-state" style="grid-column: 1 / -1;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <h3>Oops! Something went wrong</h3>
+                    <p>${message}</p>
+                    <button onclick="refreshData()">
+                        <i class="fas fa-sync-alt"></i> Try Again
+                    </button>
+                </div>
+            `;
+        }
+
+        // Toast Notifications
+        function showToast(type, title, message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                </div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Modal Functions
+        function openVideoModal(videoId) {
+            const video = state.videos.find(v => v.id === videoId);
+            if (!video) return;
+
+            const modal = document.getElementById('videoModal');
+            const modalBody = document.getElementById('modalBody');
+
+            const videoUrl = video.video?.playAddr || video.video?.downloadAddr || '';
+
+            modalBody.innerHTML = `
+                <div class="modal-video">
+                    <div class="modal-video-player">
+                        ${videoUrl ? 
+                            `<video controls autoplay loop>
+                                <source src="${videoUrl}" type="video/mp4">
+                            </video>` :
+                            `<div style="height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--text-muted);">
+                                <i class="fas fa-video-slash" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                                <p>Video preview not available</p>
+                                <a href="https://www.tiktok.com/@${video.author?.uniqueId}/video/${video.id}" 
+                                   target="_blank" 
+                                   style="color: var(--secondary); margin-top: 0.5rem;">
+                                    Watch on TikTok <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>`
+                        }
+                    </div>
+                    <div class="modal-video-info">
+                        <h2>${video.desc || 'Trending Video'}</h2>
+                        
+                        <div class="video-author" style="margin-bottom: 1.5rem;">
+                            <div class="author-avatar" style="width: 40px; height: 40px; font-size: 1rem;">
+                                ${video.author?.avatarThumb ? 
+                                    `<img src="${video.author.avatarThumb}" alt="">` :
+                                    (video.author?.nickname || 'U').charAt(0)
+                                }
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">@${video.author?.uniqueId || 'user'}</div>
+                                <div style="color: var(--text-muted); font-size: 0.85rem;">
+                                    ${video.author?.nickname || 'TikTok User'}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-stats-grid">
+                            <div class="modal-stat">
+                                <div class="modal-stat-value">${formatNumber(video.playCount)}</div>
+                                <div class="modal-stat-label">Views</div>
+                            </div>
+                            <div class="modal-stat">
+                                <div class="modal-stat-value">${formatNumber(video.diggCount)}</div>
+                                <div class="modal-stat-label">Likes</div>
+                            </div>
+                            <div class="modal-stat">
+                                <div class="modal-stat-value">${formatNumber(video.shareCount)}</div>
+                                <div class="modal-stat-label">Shares</div>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <h4 style="margin-bottom: 0.75rem; color: var(--text-muted); font-size: 0.9rem;">
+                                TREND SCORE
+                            </h4>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="flex: 1; height: 8px; background: var(--dark-lighter); border-radius: 4px; overflow: hidden;">
+                                    <div style="width: ${video.trendScore}%; height: 100%; background: var(--gradient); border-radius: 4px;"></div>
+                                </div>
+                                <span style="font-size: 1.5rem; font-weight: 700; color: var(--success);">
+                                    ${video.trendScore}
+                                </span>
+                            </div>
+                        </div>
+
+                        ${video.challenges?.length ? `
+                            <div style="margin-bottom: 1.5rem;">
+                                <h4 style="margin-bottom: 0.75rem; color: var(--text-muted); font-size: 0.9rem;">
+                                    HASHTAGS
+                                </h4>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                    ${video.challenges.map(c => `
+                                        <span style="background: rgba(37, 244, 238, 0.15); color: var(--secondary); padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.85rem;">
+                                            #${c.title}
+                                        </span>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        <a href="https://www.tiktok.com/@${video.author?.uniqueId}/video/${video.id}" 
+                           target="_blank"
+                           style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--gradient); color: white; padding: 0.75rem 1.5rem; border-radius: 10px; text-decoration: none; font-weight: 600;">
+                            <i class="fab fa-tiktok"></i>
+                            Open in TikTok
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('videoModal').classList.remove('active');
+            const video = document.querySelector('.modal-video-player video');
+            if (video) video.pause();
+        }
+
+        // Search Function
+        async function searchHashtag(hashtag) {
+            showToast('success', 'Searching', `Looking for #${hashtag} videos...`);
+            try {
+                const data = await fetchFromAPI('/challenge/posts', {
+                    challenge_name: hashtag,
+                    count: '20'
+                });
+
+                if (data && data.data && data.data.videos) {
+                    state.videos = data.data.videos.map(video => ({
+                        ...video,
+                        trendScore: calculateTrendScore(video),
+                        category: getVideoCategory(video)
+                    }));
+                    renderVideos();
+                    showToast('success', 'Found', `${state.videos.length} videos for #${hashtag}`);
+                }
+            } catch (error) {
+                showToast('error', 'Error', `Couldn't find videos for #${hashtag}`);
+            }
+        }
+
+        // Refresh Data
+        async function refreshData() {
+            const btn = document.getElementById('refreshBtn');
+            btn.classList.add('spinning');
+            
+            await fetchTrendingVideos();
+            await fetchPopularHashtags();
+            await fetchTrendingSounds();
+            renderPredictions();
+            
+            state.lastUpdate = new Date();
+            btn.classList.remove('spinning');
+        }
+
+        // Mock Data Fallback
+        function loadMockData() {
+            state.videos = [
+                {
+                    id: '1',
+                    desc: 'Amazing dance challenge that everyone is trying! 💃 #dance #viral #trending',
+                    playCount: 2400000,
+                    diggCount: 450000,
+                    commentCount: 12000,
+                    shareCount: 35000,
+                    video: { cover: 'https://picsum.photos/400/600?random=1' },
+                    author: { uniqueId: 'dancequeen', nickname: 'Dance Queen', avatarThumb: '' },
+                    challenges: [{ title: 'dance' }, { title: 'viral' }],
+                    music: { id: '1', title: 'Trending Beat', authorName: 'DJ Mix' },
+                    trendScore: 95
+                },
+                {
+                    id: '2',
+                    desc: 'This cooking hack will change your life! 🍳 #food #cooking #lifehack',
+                    playCount: 1800000,
+                    diggCount: 320000,
+                    commentCount: 8000,
+                    shareCount: 25000,
+                    video: { cover: 'https://picsum.photos/400/600?random=2' },
+                    author: { uniqueId: 'chefmaster', nickname: 'Chef Master', avatarThumb: '' },
+                    challenges: [{ title: 'food' }, { title: 'cooking' }],
+                    music: { id: '2', title: 'Cooking Vibes', authorName: 'Kitchen Beats' },
+                    trendScore: 91
+                },
+                {
+                    id: '3',
+                    desc: 'POV: You finally understand the assignment 📚 #comedy #relatable',
+                    playCount: 1500000,
+                    diggCount: 280000,
+                    commentCount: 15000,
+                    shareCount: 20000,
+                    video: { cover: 'https://picsum.photos/400/600?random=3' },
+                    author: { uniqueId: 'funnypage', nickname: 'Funny Page', avatarThumb: '' },
+                    challenges: [{ title: 'comedy' }, { title: 'relatable' }],
+                    music: { id: '3', title: 'Comedy Sound', authorName: 'Viral Audio' },
+                    trendScore: 88
+                },
+                {
+                    id: '4',
+                    desc: 'Outfit check for summer 2024 ✨ #fashion #ootd #style',
+                    playCount: 1200000,
+                    diggCount: 200000,
+                    commentCount: 5000,
+                    shareCount: 15000,
+                    video: { cover: 'https://picsum.photos/400/600?random=4' },
+                    author: { uniqueId: 'fashionista', nickname: 'Style Queen', avatarThumb: '' },
+                    challenges: [{ title: 'fashion' }, { title: 'ootd' }],
+                    music: { id: '4', title: 'Fashion Walk', authorName: 'Runway Beats' },
+                    trendScore: 85
+                },
+                {
+                    id: '5',
+                    desc: 'This workout changed everything 💪 #fitness #gym #workout',
+                    playCount: 900000,
+                    diggCount: 150000,
+                    commentCount: 4000,
+                    shareCount: 10000,
+                    video: { cover: 'https://picsum.photos/400/600?random=5' },
+                    author: { uniqueId: 'fitpro', nickname: 'Fitness Pro', avatarThumb: '' },
+                    challenges: [{ title: 'fitness' }, { title: 'gym' }],
+                    music: { id: '5', title: 'Pump It Up', authorName: 'Gym Mix' },
+                    trendScore: 82
+                },
+                {
+                    id: '6',
+                    desc: 'Small business update! New products dropping soon 📦 #smallbusiness',
+                    playCount: 700000,
+                    diggCount: 120000,
+                    commentCount: 3000,
+                    shareCount: 8000,
+                    video: { cover: 'https://picsum.photos/400/600?random=6' },
+                    author: { uniqueId: 'shopowner', nickname: 'Small Biz Owner', avatarThumb: '' },
+                    challenges: [{ title: 'smallbusiness' }, { title: 'entrepreneur' }],
+                    music: { id: '6', title: 'Business Mode', authorName: 'Success Sounds' },
+                    trendScore: 78
+                }
+            ];
+
+            state.hashtags = [
+                { name: 'dance', count: 15, views: 5000000 },
+                { name: 'viral', count: 12, views: 4500000 },
+                { name: 'food', count: 10, views: 3800000 },
+                { name: 'comedy', count: 9, views: 3200000 },
+                { name: 'fashion', count: 8, views: 2800000 },
+                { name: 'fitness', count: 7, views: 2400000 },
+                { name: 'smallbusiness', count: 6, views: 1900000 },
+                { name: 'lifehack', count: 5, views: 1500000 }
+            ];
+
+            state.sounds = [
+                { id: '1', title: 'Trending Beat', author: 'DJ Mix', videoCount: 15000, coverUrl: '' },
+                { id: '2', title: 'Cooking Vibes', author: 'Kitchen Beats', videoCount: 12000, coverUrl: '' },
+                { id: '3', title: 'Comedy Sound', author: 'Viral Audio', videoCount: 9000, coverUrl: '' },
+                { id: '4', title: 'Fashion Walk', author: 'Runway Beats', videoCount: 7500, coverUrl: '' },
+                { id: '5', title: 'Pump It Up', author: 'Gym Mix', videoCount: 6000, coverUrl: '' },
+                { id: '6', title: 'Business Mode', author: 'Success Sounds', videoCount: 4500, coverUrl: '' }
+            ];
+
+            renderVideos();
+            renderHashtags();
+            renderSounds();
+            renderPredictions();
+
+            document.getElementById('trendingCount').textContent = state.videos.length;
+            document.getElementById('hashtagCount').textContent = state.hashtags.length;
+            document.getElementById('soundCount').textContent = state.sounds.length;
+        }
+
+        // Event Listeners
+        document.getElementById('refreshBtn').addEventListener('click', refreshData);
+
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                state.currentRegion = this.dataset.region || 'us';
+                refreshData();
+            });
+        });
+
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('keypress', async function(e) {
+            if (e.key === 'Enter' && this.value.trim()) {
+                const query = this.value.trim().replace('#', '');
+                await searchHashtag(query);
+            }
+        });
+
+        document.getElementById('videoModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            refreshData();
+            
+            // Auto-refresh every 5 minutes
+            setInterval(refreshData, 300000);
+        });
+    </script>
+</body>
+</html>
